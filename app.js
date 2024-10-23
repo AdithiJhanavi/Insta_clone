@@ -7,7 +7,7 @@ const postRoutes = require("./routes/postRoutes")
 const cors = require("cors")
 const authorizeUser = require("./middlewares/authorizeUser")
 
-
+const path = require ("path");
 const app = express()
 
 app.use(cors())
@@ -24,6 +24,12 @@ app.get("/test", authorizeUser, (req, res) => {
 })
 
 
+
+app.use(express.static(path.join(__dirname,"./client/build")))
+
+app.get("*",(req,res)=>{
+    res.sendFile(path.join(__dirname,"./client/build","index.html"))
+})
 
 sequelize.sync().then(() => {
     console.log("Database & tables synced")
